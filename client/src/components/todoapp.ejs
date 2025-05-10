@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+  <body>
+    <div class="container" style="height: 90vh">
+      <div class="row row-gap-2">
+        <div
+          class="col-6 mx-auto my-auto shadow-sm text-center h-50 bg-warning"
+        >
+          <h3 class="text-light">Welcome to Mercy Todo</h3>
+          <form method="POST" action="/todo/addTodo">
+            <div class="d-flex align-items-center mx-auto my-2">
+              <input
+                type="text"
+                placeholder="Input your Todo"
+                class="form-control"
+                name="todoname"
+              />
+              <button class="btn btn-info w-25 ms-4" type="">Enter</button>
+            </div>
+          </form>
+          <div class="bg-dark p-1">
+            <% for(let i=0; i < result.length; i++){%>
+            <div
+              class="d-flex justify-content-between my-1 p-1 bg-success align-items-center text-light"
+            >
+              <div><%=i+1 +"."%></div>
+              <div><%=result[i].todoname%></div>
+              <div class="button-div d-flex column-gap-2">
+                <!-- Edit form -->
+                <button data-bs-toggle="modal"
+                data-bs-target="#exampleModal<%=result[i]._id%>"
+                class="btn btn-sm btn-warning">Edit</button>
+                <!-- Delete form -->
+                <form action="/todo/deleteTodo" method="POST">
+                  <input type="hidden" name="id" value="<%=result[i]._id%>" />
+                  <button class="btn btn-sm btn-danger">Delete</button>
+                </form>
+              </div>
+            </div>
+            <div
+              class="modal fade" id="exampleModal<%=result[i]._id%>"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                      Update Details
+                    </h1>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <form action="/todo/editTodo" method="POST">
+                    <div class="modal-body">
+                      <input
+                        type="text"
+                        value="<%=result[i].todoname%>"
+                        class="form-control"
+                        placeholder="First Name"
+                        name="newTodo"
+                      />
+                      <input
+                        type="hidden"
+                        value="<%=result[i].id%>"
+                        class="form-control"
+                        placeholder="First Name"
+                        name="id"
+                      />
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                        Close
+                      </button>
+                        <button
+                          class="btn btn-md btn-outline-success"
+                          data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                          type="submit"
+                        >
+                          Update
+                        </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <%}%>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

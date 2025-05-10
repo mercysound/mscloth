@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './ListProduct.css'
-import cross_icon from '../../Assets/cross_icon.png'
+// import cross_icon from '../../assets/cross_icon.png'
+import cross_icon from '../../assets/cross_icon.png'
 const ListProduct = () => {
 
   const [allproducts, setAllproducts] = useState([]);

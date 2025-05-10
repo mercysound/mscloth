@@ -299,18 +299,14 @@ app.post('/getcart', fetchUser, async (req, res)=>{
 })
 
  
-// Serve static React app (main frontend)
+// Serve main React app
 app.use(express.static(path.join(__dirname, "../client/build")));
-
-// Serve static admin dashboard
-app.use("/admin", express.static(path.join(__dirname, "../admin-banner/dist")));
-
-// Catch-all for main React app
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
-// Catch-all for admin dashboard
+// Serve admin dashboard
+app.use("/admin", express.static(path.join(__dirname, "../admin-banner/dist")));
 app.get("/admin/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../admin-banner/dist/index.html"));
 });
@@ -318,7 +314,7 @@ app.get("/admin/*", (req, res) => {
 // const buildPath = path.join(__dirname, "../frontend/build/index.html");
 
 // if (!fs.existsSync(buildPath)) {
-//   console.error("❌ Build not found. Did you run `npm run build` in frontend?");
+//   console.error(" Build not found. Did you run `npm run build` in frontend?");
 //   process.exit(1);
 // }
 

@@ -5,12 +5,13 @@ import { Routes, Route } from 'react-router-dom';
 import AddProduct from '../../Components/AddProduct/AddProduct';
 import ListProduct from '../../Components/ListProduct/ListProduct';
 
-const Admin = () => {
+const  Admin = () => {
   return (
     <div className='admin'>
       <Sidebar/>
       <Routes>
-        <Route path='/addproduct' element={<AddProduct/>}/>
+        <Route path='/' element={<h1>Welcome to admin page</h1>}/>
+        <Route path='/includeproduct' element={<AddProduct/>}/>
         <Route path='/listproduct' element={<ListProduct/>}/>
       </Routes>
 

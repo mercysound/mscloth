@@ -2,36 +2,46 @@ import React, { useEffect, useState } from 'react'
 import './ListProduct.css'
 // import cross_icon from '../../assets/cross_icon.png'
 import cross_icon from '../../assets/cross_icon.png'
+import { toast } from 'react-toastify';
+
 const ListProduct = () => {
 
   const [allproducts, setAllproducts] = useState([]);
 
-  const fetchInfo = async ()=>{
+  const fetchInfo = async () => {
     await fetch('/allproducts')
-    .then((res)=>res.json())
-    .then((data)=>{
-      setAllproducts(data)
-      console.log(data);
-      
-    })
+      .then((res) => res.json())
+      .then((data) => {
+        setAllproducts(data.data)
+        // console.log(data.data);
+
+      })
   }
 
-  const remove_product = async (id) =>{
-    await fetch('/removeproduct ',{
+  const remove_product = async (id) => {
+    await fetch('/removeproduct', {
       method: 'POST',
-      headers:{
+      headers: {
         Accept: 'application/json',
-        'Content-Type':'application/json',
+        'Content-Type': 'application/json',
       },
-      body:JSON.stringify({id:id})
-    }).catch((err)=>{err})
+      body: JSON.stringify({ id: id })
+    }).then((resp) => resp.json())
+        .then((data) => {
+          data
+          // .success?alert("Product succcessful"):alert("Failed")
+          console.log(data);
+          
+          toast.success(data.message);
+        })
+  .catch((err) => { err })
     await fetchInfo()
   }
 
   useEffect(() => {
     fetchInfo()
   }, [])
-  
+
   return (
     <div className='list-product'>
       <h1>All Products List</h1>
@@ -45,16 +55,17 @@ const ListProduct = () => {
       </div>
       <div className="listproduct-allproducts">
         <hr />
-        {allproducts.map((product, index)=>{
-          return<> <div key={index} className='listproduct-format-main listproduct-format'>
+        {allproducts.map((product, index) => {
+          return <React.Fragment key={index}> <div className='listproduct-format-main listproduct-format' key={index}>
             <img src={product.image} alt="" className="listproduct-product-icon" />
             <p>{product.name}</p>
             <p>${product.old_price}</p>
             <p>${product.new_price}</p>
             <p>{product.category}</p>
-            <img onClick={()=>{remove_product(product.id)}} className='listproduct-remove-icon' src={cross_icon} alt="" />
+            <img onClick={() => { remove_product(product.id) }} className='listproduct-remove-icon' src={cross_icon} alt="" />
           </div>
-          <hr /></>
+            <hr />
+          </ React.Fragment>
         })}
       </div>
     </div>

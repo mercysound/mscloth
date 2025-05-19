@@ -7,6 +7,7 @@ const multer = require("multer");
 const path = require("path");
 require("dotenv").config()
 const cors = require("cors");
+const { log } = require("console");
 app.use(express.json());
 app.use(cors());
 
@@ -49,6 +50,7 @@ const upload = multer({storage:storage})
 // Creating Upload Endpoint for images
 app.use('/images', express.static('upload/images'));
 
+// for sake of production mode for vercel deploy
 app.post("/upload", upload.single("product"), (req, res) => {
   const protocol = req.protocol;
   const host = req.get("host");
@@ -59,6 +61,7 @@ app.post("/upload", upload.single("product"), (req, res) => {
   });
 });
 
+// For sake of development mode 
 // app.post("/upload", upload.single('product'),(req, res)=>{
 //   res.json({
 //     success:1,
@@ -128,6 +131,7 @@ app.post('/addproduct', async (req, res)=>{
   res.json({
     success: true,
     name:req.body.name,
+    message:"Successful Added"
   });
 });
 
@@ -135,18 +139,21 @@ app.post('/addproduct', async (req, res)=>{
 
 app.post('/removeproduct', async (req, res)=>{
   await Product.findOneAndDelete({id:req.body.id});
-  console.log("Removed");
+  // console.log("Removed");
   res.json({
     success: true,
-    name:req.body.name
+    name:req.body.name,
+    message:"Product Removed"
   })
 });
 
 // Creating API for getting all products
 app.get('/allproducts', async (req, res)=>{
   let products = await Product.find({});
-  console.log("All Products Fetched");
-  res.json({data:products})
+  // console.log("All Products Fetched");
+  // console.log(products);
+  res.json({data:products, message:"success"})
+  
 })
 
 // Schema for Creating Users
@@ -297,7 +304,10 @@ app.post('/getcart', fetchUser, async (req, res)=>{
   let userData = await Users.findOne({_id:req.user.id})
   res.json({data:userData.cartData})
 })
-
+// for the sake of production mode
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../admin-banner/index.html'));
+});
  
 // Serve main React app
 app.use(express.static(path.join(__dirname, "../client/build")));
@@ -305,18 +315,11 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
-// Serve admin dashboard
+// Serve admin dashboard reactvite
 app.use("/admin", express.static(path.join(__dirname, "../admin-banner/dist")));
 app.get("/admin/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../admin-banner/dist/index.html"));
 });
-// const fs = require("fs");
-// const buildPath = path.join(__dirname, "../frontend/build/index.html");
-
-// if (!fs.existsSync(buildPath)) {
-//   console.error(" Build not found. Did you run `npm run build` in frontend?");
-//   process.exit(1);
-// }
 
 app.listen(port, (error)=>{
   if(!error){

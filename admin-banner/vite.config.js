@@ -71,22 +71,38 @@
 
 // Later used for production mode
 // vite.config.js
+// import { defineConfig } from 'vite'
+// import react from '@vitejs/plugin-react'
+// import path from 'path'
+
+// export default defineConfig({
+//   base: '/admin/', // 👈 CRUCIAL for deploying to a subpath
+//   plugins: [react()],
+//   resolve: {
+//     alias: {
+//       '@': path.resolve(__dirname, './src'),
+//     },
+//   },
+//   build: {
+//     outDir: 'dist',
+//   },
+//   optimizeDeps: {
+//     include: ['react-router-dom'],
+//   },
+// })
+
+// vite.config.js
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
-  base: '/admin/', // 👈 CRUCIAL for deploying to a subpath
+  base: '/admin/', // 👈 Crucial for deployment under /admin
   plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
-  build: {
-    outDir: 'dist',
-  },
-  optimizeDeps: {
-    include: ['react-router-dom'],
-  },
 })
+

@@ -321,22 +321,18 @@ app.post('/getcart', fetchUser, async (req, res)=>{
 //   res.sendFile(path.join(__dirname, "../admin-banner/dist/index.html"));
 // });
 // Serve main React app (CRA)
-app.use(express.static(path.join(__dirname, "../client/build")));
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
-});
-app.get("/some-other-route", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
-});
-// Catch-all for client-side routing (React Router in CRA)
-app.get(/^\/(?!admin).*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
-});
-
-// Serve Vite admin dashboard at /admin
+// Serve Vite admin dashboard first
 app.use("/admin", express.static(path.join(__dirname, "../admin-banner/dist")));
 app.get("/admin/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../admin-banner/dist/index.html"));
+});
+
+// ✅ Serve CRA static files
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+// ✅ Serve CRA for any other route (except /admin)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
 

@@ -305,21 +305,40 @@ app.post('/getcart', fetchUser, async (req, res)=>{
   res.json({data:userData.cartData})
 })
 // for the sake of production mode
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../admin-banner/index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.resolve(__dirname, '../admin-banner/index.html'));
+// });
  
-// Serve main React app
+// // Serve main React app
+// app.use(express.static(path.join(__dirname, "../client/build")));
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../client/build/index.html"));
+// });
+
+// // Serve admin dashboard reactvite
+// app.use("/admin", express.static(path.join(__dirname, "../admin-banner/dist")));
+// app.get("/admin/*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../admin-banner/dist/index.html"));
+// });
+// Serve main React app (CRA)
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
+app.get("/some-other-route", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
+// Catch-all for client-side routing (React Router in CRA)
+app.get(/^\/(?!admin).*/, (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
 
-// Serve admin dashboard reactvite
+// Serve Vite admin dashboard at /admin
 app.use("/admin", express.static(path.join(__dirname, "../admin-banner/dist")));
 app.get("/admin/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../admin-banner/dist/index.html"));
 });
+
 
 app.listen(port, (error)=>{
   if(!error){

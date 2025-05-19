@@ -305,36 +305,21 @@ app.post('/getcart', fetchUser, async (req, res)=>{
   res.json({data:userData.cartData})
 })
 // for the sake of production mode
-// app.get('*', (req, res) => {
-//   res.sendFile(path.resolve(__dirname, '../admin-banner/index.html'));
-// });
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../admin-banner/index.html'));
+});
  
-// // Serve main React app
-// app.use(express.static(path.join(__dirname, "../client/build")));
-// app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../client/build/index.html"));
-// });
+// Serve main React app
+app.use(express.static(path.join(__dirname, "../client/build")));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
 
-// // Serve admin dashboard reactvite
-// app.use("/admin", express.static(path.join(__dirname, "../admin-banner/dist")));
-// app.get("/admin/*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../admin-banner/dist/index.html"));
-// });
-// Serve main React app (CRA)
-// Serve Vite admin dashboard first
+// Serve admin dashboard reactvite
 app.use("/admin", express.static(path.join(__dirname, "../admin-banner/dist")));
 app.get("/admin/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../admin-banner/dist/index.html"));
 });
-
-// ✅ Serve CRA static files
-app.use(express.static(path.join(__dirname, "../client/build")));
-
-// ✅ Serve CRA for any other route (except /admin)
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
-});
-
 
 app.listen(port, (error)=>{
   if(!error){

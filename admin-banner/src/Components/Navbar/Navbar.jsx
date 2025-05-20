@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
   return (
     <div className='navbar'>
-      <Link to={'/'} style={{textDecoration:"none"}}>
+      <Link to={'/admin'} style={{textDecoration:"none"}}>
         <img src={navlogo} alt='' className='nav-logo'/>
       </Link>
       <img src={navProfile} alt='' className='nav-profile'/>

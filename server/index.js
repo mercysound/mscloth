@@ -320,18 +320,15 @@ app.post('/getcart', fetchUser, async (req, res)=>{
 // app.get("/admin/*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "../admin-banner/dist/index.html"));
 // });
-// Serve main React app (CRA)
-// Serve Vite admin dashboard first
+// ✅ Serve Vite admin panel first
 app.use("/admin", express.static(path.join(__dirname, "../admin-banner/dist")));
 app.get("/admin/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../admin-banner/dist/index.html"));
 });
 
-// ✅ Serve CRA static files
+// ✅ Serve CRA main frontend
 app.use(express.static(path.join(__dirname, "../client/build")));
-
-// ✅ Serve CRA for any other route (except /admin)
-app.get("/", (req, res) => {
+app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 

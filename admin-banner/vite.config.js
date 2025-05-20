@@ -91,32 +91,12 @@
 //   },
 // })
 
+// admin-banner/vite.config.js
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
-  base: '/admin/', // ✅ Required for correct path resolution when deployed under /admin
-  server: {
-    // ✅ Only used in development
-    host: '0.0.0.0',
-    port: 4100,
-    proxy: {
-      '/addproduct': 'http://localhost:4000',
-      '/listproduct': 'http://localhost:4000',
-      '/removeproduct': 'http://localhost:4000',
-      '/upload': 'http://localhost:4000',
-    },
-    historyApiFallback: true,
-    fs: {
-      strict: false,
-    },
-  },
+  base: '/admin/', // <-- IMPORTANT
 })
 

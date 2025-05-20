@@ -13,6 +13,7 @@ app.use(cors());
 
 // Database connection with mongodb
 const mongooseUri = process.env.MONG_DB_URI;
+
 mongoose.connect(mongooseUri)
 .then((res)=>{
   console.log('mongoose has connected');
@@ -106,6 +107,42 @@ const Product = mongoose.model("Product", {
   }
 })
 
+//This is meant for changing the prefix of image to dev or pro mode
+// const LOCAL_PREFIX = 'http://localhost:4000';
+// const DEPLOYED_PREFIX = 'http://mscloth-1.onrender.com';
+
+// async function updateImageUrls() {
+//   try {
+//     const products = await Product.find({ image: { $regex: LOCAL_PREFIX } });
+//     console.log("working");
+    
+
+//     for (const product of products) {
+//       product.image = product.image.replace(LOCAL_PREFIX, DEPLOYED_PREFIX);
+//       await product.save();
+//       console.log(`✅ Updated: ${product._id}`);
+//     }
+
+//     console.log('🎉 Done updating image URLs.');
+//     process.exit();
+//   } catch (err) {
+//     console.error("❌ Error:", err);
+//     process.exit(1);
+//   }
+// }
+// // ⬇️ Only run this if you pass a flag like --update-images
+// // Only run update if flag is passed
+// if (process.argv.includes("--update-images")) {
+//   console.log("🛠 Running updateImageUrls...");
+//   updateImageUrls();
+// } else {
+//   // Just print products if no flag
+//   Product.find().then(data => {
+//     console.log("🧾 All Products:\n", data);
+//     process.exit();
+//   });
+// }
+
 app.post('/addproduct', async (req, res)=>{
   let products = await Product.find({});
   let id;
@@ -125,7 +162,7 @@ app.post('/addproduct', async (req, res)=>{
     new_price: req.body.new_price,
     old_price: req.body.old_price,
   }); 
-  console.log(product);
+
   await product.save();
   console.log("Saved")
   res.json({
